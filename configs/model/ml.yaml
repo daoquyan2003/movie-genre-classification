@@ -1,0 +1,31 @@
+_target_: src.models.ml_module.MLLitModule
+
+optimizer:
+  _target_: torch.optim.AdamW
+  # _partial_: True 
+  lr: 0.0001
+  weight_decay: 0.0
+
+scheduler:
+  _target_: torch.optim.lr_scheduler.ReduceLROnPlateau
+  _partial_: true
+  mode: min
+  factor: 0.1
+  patience: 10
+  threshold: 1e-4
+  threshold_mode: rel 
+  cooldown: 0
+  min_lr: 1e-7
+  eps: 1e-8
+  verbose: true
+
+net:
+  _target_: src.models.components.multimodal_model.MultimodalModel
+  num_classes: 18
+  hidden_size: 64
+  text_pretrained: bert-base-uncased
+  img_pretrained: resnet34
+  img_weights: DEFAULT
+
+# compile model for faster training with pytorch 2.0
+compile: false

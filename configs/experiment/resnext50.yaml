@@ -1,0 +1,30 @@
+# @package _global_
+
+# to execute this experiment run:
+# python train.py experiment=resnet50
+
+defaults:
+  - override /data: ml
+  - override /model: ml
+  - override /callbacks: default
+  - override /trainer: gpu
+
+# all parameters below will be merged with parameters from default configurations set above
+# this allows you to overwrite only specified parameters
+
+tags: ["resnext50"]
+
+seed: 42
+
+trainer:
+  min_epochs: 15
+  max_epochs: 50
+  gradient_clip_val: 0.5
+
+model:
+  net:
+    img_pretrained: resnext50_32x4d
+
+logger:
+  wandb:
+    tags: ${tags}

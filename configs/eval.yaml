@@ -2,9 +2,9 @@
 
 defaults:
   - _self_
-  - data: mnist # choose datamodule with `test_dataloader()` for evaluation
-  - model: mnist
-  - logger: null
+  - data: ml # choose datamodule with `test_dataloader()` for evaluation
+  - model: ml
+  - logger: wandb
   - trainer: default
   - paths: default
   - extras: default
