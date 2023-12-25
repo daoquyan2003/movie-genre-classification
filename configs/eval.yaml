@@ -5,7 +5,7 @@ defaults:
   - data: ml # choose datamodule with `test_dataloader()` for evaluation
   - model: ml
   - logger: wandb
-  - trainer: default
+  - trainer: gpu
   - paths: default
   - extras: default
   - hydra: default
