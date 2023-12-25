@@ -1,7 +1,7 @@
 # @package _global_
 
 # to execute this experiment run:
-# python train.py experiment=resnet50
+# python train.py experiment=efficientnet_b7
 
 defaults:
   - override /data: ml
@@ -18,7 +18,7 @@ seed: 42
 
 trainer:
   min_epochs: 15
-  max_epochs: 50
+  max_epochs: 100
   gradient_clip_val: 0.5
 
 model:

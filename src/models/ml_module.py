@@ -11,6 +11,7 @@ class MLLitModule(LightningModule):
         criterion: torch.nn.Module,
         optimizer: torch.optim.Optimizer,
         scheduler: torch.optim.lr_scheduler,
+        threshold: float,
         compile: bool,
     ):
         super().__init__()
@@ -19,17 +20,17 @@ class MLLitModule(LightningModule):
         self.net = net
         self.criterion = criterion
 
-        self.train_precision = MultilabelPrecision(num_labels=18, threshold=0.5, average='macro')
-        self.val_precision = MultilabelPrecision(num_labels=18, threshold=0.5, average='macro')
-        self.test_precision = MultilabelPrecision(num_labels=18, threshold=0.5, average='macro')
+        self.train_precision = MultilabelPrecision(num_labels=18, threshold=self.hparams.threshold, average='macro')
+        self.val_precision = MultilabelPrecision(num_labels=18, threshold=self.hparams.threshold, average='macro')
+        self.test_precision = MultilabelPrecision(num_labels=18, threshold=self.hparams.threshold, average='macro')
 
-        self.train_recall = MultilabelRecall(num_labels=18, threshold=0.5, average='macro')
-        self.val_recall = MultilabelRecall(num_labels=18, threshold=0.5, average='macro')
-        self.test_recall = MultilabelRecall(num_labels=18, threshold=0.5, average='macro')
+        self.train_recall = MultilabelRecall(num_labels=18, threshold=self.hparams.threshold, average='macro')
+        self.val_recall = MultilabelRecall(num_labels=18, threshold=self.hparams.threshold, average='macro')
+        self.test_recall = MultilabelRecall(num_labels=18, threshold=self.hparams.threshold, average='macro')
 
-        self.train_f1 = MultilabelF1Score(num_labels=18, threshold=0.5, average='macro')
-        self.val_f1 = MultilabelF1Score(num_labels=18, threshold=0.5, average='macro')
-        self.test_f1 = MultilabelF1Score(num_labels=18, threshold=0.5, average='macro')
+        self.train_f1 = MultilabelF1Score(num_labels=18, threshold=self.hparams.threshold, average='macro')
+        self.val_f1 = MultilabelF1Score(num_labels=18, threshold=self.hparams.threshold, average='macro')
+        self.test_f1 = MultilabelF1Score(num_labels=18, threshold=self.hparams.threshold, average='macro')
 
         self.train_loss = MeanMetric()
         self.val_loss = MeanMetric()
