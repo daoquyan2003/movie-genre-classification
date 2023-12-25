@@ -11,6 +11,7 @@ class MLLitModule(LightningModule):
         criterion: torch.nn.Module,
         optimizer: torch.optim.Optimizer,
         scheduler: torch.optim.lr_scheduler,
+        compile: bool,
     ):
         super().__init__()
 
@@ -119,6 +120,18 @@ class MLLitModule(LightningModule):
         self.log("test_f1", self.test_f1, on_step=False, on_epoch=True, prog_bar=True)
 
         return {"loss": loss, "preds": preds, "targets": targets}
+    
+    def setup(self, stage: str) -> None:
+        """Lightning hook that is called at the beginning of fit (train + validate), validate,
+        test, or predict.
+
+        This is a good hook when you need to build models dynamically or adjust something about
+        them. This hook is called on every process when using DDP.
+
+        :param stage: Either `"fit"`, `"validate"`, `"test"`, or `"predict"`.
+        """
+        if self.hparams.compile and stage == "fit":
+            self.net = torch.compile(self.net)
 
     def configure_optimizers(self):
         """Choose what optimizers and learning-rate schedulers to use in your optimization.
@@ -126,7 +139,7 @@ class MLLitModule(LightningModule):
         Examples:
             https://pytorch-lightning.readthedocs.io/en/latest/common/lightning_module.html#configure-optimizers
         """
-        optimizer = self.hparams.optimizer(params=filter(lambda p: p.requires_grad, self.parameters()))
+        optimizer = self.hparams.optimizer(params=filter(lambda p: p.requires_grad, self.trainer.model.parameters()))
         if self.hparams.scheduler is not None:
                 scheduler = self.hparams.scheduler(optimizer=optimizer)
                 return {

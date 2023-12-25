@@ -24,7 +24,7 @@ class MLDataset(Dataset):
             text_pretrained : str = "bert-base-uncased",
             transform: Any = None,
     ) -> None:
-        super.__init__()
+        super().__init__()
 
         self.data_dir = data_dir
         self.text_pretrained = text_pretrained
@@ -35,6 +35,7 @@ class MLDataset(Dataset):
         else:
             self.transform = Compose(
                 [
+                    A.Resize(256, 256),
                     A.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225]),
                     ToTensorV2(),
                 ]
