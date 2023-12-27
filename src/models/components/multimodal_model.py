@@ -16,8 +16,11 @@ class MultimodalModel(nn.Module):
         for param in self.image_feature_extractor.parameters():
             param.requires_grad = False
 
-        # Unfreeze params of last layer
+        # Unfreeze params of last layers
         for param in self.image_feature_extractor.fc.parameters():
+            param.requires_grad = True
+
+        for param in self.image_feature_extractor.layer4.parameters():
             param.requires_grad = True
 
         self.fc1 = nn.Linear(1000, hidden_size)
