@@ -24,7 +24,7 @@ net:
   num_classes: 18
   hidden_size: 64
   text_pretrained: bert-base-uncased
-  img_pretrained: resnext101_32x8d
+  img_pretrained: resnet50
   img_weights: DEFAULT
 
 criterion:
